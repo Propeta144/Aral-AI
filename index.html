@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AralAI — Smart AI Quiz & Flashcard Assistant</title>
+    <title>AralAI V2 — Smart AI Quiz & Flashcard Companion</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        appPrimary: '#5B4EFF', // Exact vibrant purple accent from app
+                        appPrimary: '#5B4EFF', // Signature vibrant purple
                         appPurpleDark: '#4338CA',
-                        appBgLight: '#F8FAFC',
-                        appCardBg: '#FFFFFF',
+                        appDarkBg: '#0B0F19',
+                        appCardBg: '#121826',
                     },
                     fontFamily: {
                         sans: ['Plus Jakarta Sans', 'sans-serif'],
@@ -25,7 +25,7 @@
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
         body {
@@ -34,227 +34,379 @@
             overflow-x: hidden;
         }
 
-        /* Subtle Purple Cyber Grid */
+        /* Subtle Ambient Grid Background */
         .bg-grid-pattern {
-            background-size: 36px 36px;
+            background-size: 32px 32px;
             background-image: 
-                linear-gradient(to right, rgba(91, 78, 255, 0.07) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(91, 78, 255, 0.07) 1px, transparent 1px);
+                linear-gradient(to right, rgba(91, 78, 255, 0.06) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(91, 78, 255, 0.06) 1px, transparent 1px);
         }
 
-        /* Glowing Orbs matching App's Primary Color */
+        /* Glowing Orbs */
         .glow-orb-purple {
-            background: radial-gradient(circle, rgba(91, 78, 255, 0.28) 0%, rgba(0,0,0,0) 70%);
+            background: radial-gradient(circle, rgba(91, 78, 255, 0.25) 0%, rgba(0,0,0,0) 70%);
         }
-        .glow-orb-blue {
-            background: radial-gradient(circle, rgba(56, 189, 248, 0.18) 0%, rgba(0,0,0,0) 70%);
+        .glow-orb-cyan {
+            background: radial-gradient(circle, rgba(6, 182, 212, 0.15) 0%, rgba(0,0,0,0) 70%);
         }
 
+        /* Glassmorphism Cards */
         .glass-card {
-            background: rgba(18, 24, 38, 0.7);
+            background: rgba(18, 24, 38, 0.75);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 20px;
         }
         .glass-card:hover {
-            border-color: rgba(91, 78, 255, 0.5);
-            box-shadow: 0 10px 30px -10px rgba(91, 78, 255, 0.3);
+            border-color: rgba(91, 78, 255, 0.4);
+            box-shadow: 0 10px 30px -10px rgba(91, 78, 255, 0.25);
         }
 
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-8px); }
-        }
-        .animate-float {
-            animation: float 4s ease-in-out infinite;
+        .tag-v2 {
+            background: linear-gradient(135deg, #5B4EFF 0%, #a855f7 100%);
         }
     </style>
 </head>
 <body class="bg-grid-pattern antialiased selection:bg-appPrimary selection:text-white">
 
-    <!-- Ambient Glowing Backdrops -->
-    <div class="fixed top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] glow-orb-purple pointer-events-none -z-10 animate-pulse"></div>
-    <div class="fixed bottom-10 right-0 w-[500px] h-[500px] glow-orb-blue pointer-events-none -z-10"></div>
+    <!-- Ambient Glow Effects -->
+    <div class="fixed top-0 left-1/2 -translate-x-1/2 w-[700px] h-[700px] glow-orb-purple pointer-events-none -z-10 animate-pulse"></div>
+    <div class="fixed bottom-10 right-0 w-[500px] h-[500px] glow-orb-cyan pointer-events-none -z-10"></div>
 
-    <!-- Announcement Bar -->
-    <div class="bg-gradient-to-r from-appPrimary via-purple-600 to-indigo-500 text-white font-semibold text-[11px] sm:text-xs py-2 px-4 text-center tracking-wide shadow-md">
-        ✨ AralAI Mobile Application is now Live! Download directly via Google Drive.
+    <!-- Announcement Bar for V2 -->
+    <div class="bg-gradient-to-r from-appPrimary via-purple-600 to-indigo-600 text-white font-semibold text-xs py-2.5 px-4 text-center tracking-wide shadow-lg">
+        🚀 <span class="font-bold">AralAI Version 2 is Here!</span> Enhanced Flashcard Experience, Custom Timers, Bookmarks & Progress Tracking.
     </div>
 
-    <!-- Navigation Header -->
+    <!-- Navigation Bar -->
     <nav class="max-w-7xl mx-auto px-4 sm:px-6 py-6 flex justify-between items-center">
         <div class="flex items-center gap-3">
             <div class="w-10 h-10 rounded-xl bg-appPrimary text-white font-black text-xl flex items-center justify-center shadow-lg shadow-appPrimary/40">
                 🎓
             </div>
-            <span class="text-2xl font-extrabold tracking-tight">
-                Aral <span class="text-appPrimary">AI</span>
-            </span>
+            <div class="flex items-center gap-2">
+                <span class="text-2xl font-extrabold tracking-tight">Aral<span class="text-appPrimary">AI</span></span>
+                <span class="px-2 py-0.5 text-[10px] font-bold font-mono tag-v2 text-white rounded-md uppercase tracking-wider">V2 Update</span>
+            </div>
         </div>
-        <a href="#download" class="px-5 py-2.5 bg-appPrimary/10 border border-appPrimary/40 text-appPrimary font-semibold text-xs sm:text-sm rounded-xl hover:bg-appPrimary hover:text-white transition-all duration-300 shadow-sm">
-            Get App
-        </a>
+        <div class="flex items-center gap-3">
+            <a href="#whats-new" class="hidden sm:inline-block px-4 py-2 text-xs font-semibold text-slate-300 hover:text-white transition">What's New</a>
+            <a href="#features" class="hidden sm:inline-block px-4 py-2 text-xs font-semibold text-slate-300 hover:text-white transition">Features</a>
+            <a href="#download" class="px-5 py-2.5 bg-appPrimary/10 border border-appPrimary/40 text-appPrimary font-semibold text-xs sm:text-sm rounded-xl hover:bg-appPrimary hover:text-white transition-all duration-300 shadow-sm">
+                Get V2 App
+            </a>
+        </div>
     </nav>
 
     <!-- Hero Section -->
     <section class="max-w-5xl mx-auto px-4 sm:px-6 pt-10 sm:pt-16 pb-16 text-center relative">
         
-        <!-- App Badge -->
+        <!-- Version Badge -->
         <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-appPrimary/10 border border-appPrimary/30 text-appPrimary font-medium text-xs sm:text-sm mb-6">
             <span class="w-2 h-2 rounded-full bg-appPrimary animate-ping"></span>
-            Personal Smart Quiz & Flashcard Assistant
+            Free AI Study Companion for Students
         </div>
 
-        <!-- Hero Title -->
+        <!-- Main Title -->
         <h1 class="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight leading-tight mb-6">
-            Gumawa at Mag-aral ng <br class="hidden sm:inline"/>
-            <span class="bg-gradient-to-r from-appPrimary via-indigo-400 to-cyan-400 bg-clip-text text-transparent">Quizzes & Flashcards</span> Agad!
+            Turn Any Topic or Doc Into <br class="hidden sm:inline"/>
+            <span class="bg-gradient-to-r from-appPrimary via-indigo-300 to-cyan-300 bg-clip-text text-transparent">Interactive Quizzes & Flashcards</span>
         </h1>
 
-        <p class="text-base sm:text-xl text-slate-300 max-w-2xl mx-auto font-normal mb-10 leading-relaxed">
-            I-convert ang iyong mga paksa, PDF, o Word reviewers sa interactive na mga pagsusulit. Pumili ng bilang ng tanong, uri, at wika (<span class="text-white font-semibold">Filipino o English</span>) sa loob lang ng ilang segundo!
+        <!-- App Overview Paragraph -->
+        <p class="text-base sm:text-lg text-slate-300 max-w-3xl mx-auto font-normal mb-10 leading-relaxed">
+            AralAI helps elementary, high school, college, and independent learners study smarter. Generate custom flashcards from written topics, PDFs, or Word documents, receive immediate feedback with detailed explanations, and track your progress—100% free with no login required.
         </p>
 
-        <!-- Main CTA Card -->
+        <!-- Download Action Card -->
         <div id="download" class="max-w-md mx-auto p-6 sm:p-8 glass-card border border-appPrimary/30 shadow-2xl relative">
-            <h2 class="text-lg sm:text-xl font-bold mb-2 text-white">I-download ang AralAI App</h2>
+            <div class="flex items-center justify-between mb-2">
+                <h2 class="text-lg sm:text-xl font-bold text-white">Download AralAI V2</h2>
+                <span class="text-[10px] font-mono px-2 py-0.5 bg-emerald-500/20 text-emerald-400 font-bold rounded-md">STABLE BUILD</span>
+            </div>
             <p class="text-xs text-slate-400 mb-6 font-mono">DIRECT APK DOWNLOAD VIA GOOGLE DRIVE</p>
 
-            <!-- PASTE YOUR GOOGLE DRIVE LINK HERE -->
+            <!-- REPLACE WITH YOUR GDRIVE APK LINK -->
             <a href="YOUR_GDRIVE_LINK_HERE" target="_blank" rel="noopener noreferrer" 
                class="flex items-center justify-center gap-3 w-full py-4 bg-appPrimary hover:bg-indigo-600 text-white font-bold text-base rounded-xl transition-all shadow-lg shadow-appPrimary/35 transform hover:-translate-y-0.5 active:translate-y-0">
                 <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
                     <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
                 </svg>
-                Download Mobile App (.APK)
+                Download AralAI V2 APK
             </a>
             
-            <div class="flex justify-center items-center gap-3 mt-4 text-[11px] text-slate-400 font-medium">
+            <div class="flex justify-center items-center gap-4 mt-4 text-[11px] text-slate-400 font-medium">
                 <span>✓ Android Compatible</span>
                 <span>•</span>
-                <span>✓ Fast & Free</span>
+                <span>✓ No Account Required</span>
             </div>
         </div>
     </section>
 
-    <!-- Key App Features -->
-    <section class="max-w-6xl mx-auto px-4 sm:px-6 py-12">
+    <!-- SECTION 1: WHAT'S NEW IN V2 (COMPARISON TABLE / CARDS) -->
+    <section id="whats-new" class="max-w-6xl mx-auto px-4 sm:px-6 py-12">
         <div class="text-center mb-12">
-            <h2 class="text-2xl sm:text-4xl font-extrabold tracking-tight">Mga Tampok na Feature</h2>
-            <p class="text-sm text-slate-400 mt-2">Ginawa para mas mabilis at mas madali ang pag-aaral ng mga estudyante.</p>
+            <span class="text-xs font-mono font-bold text-appPrimary uppercase tracking-widest">Major Upgrade</span>
+            <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-white mt-1">What's New in Version 2?</h2>
+            <p class="text-sm text-slate-400 mt-2">Discover how V2 evolves the learning experience beyond the original release.</p>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
             
-            <!-- Feature 1 -->
-            <div class="glass-card p-6">
-                <div class="w-12 h-12 rounded-xl bg-appPrimary/15 text-appPrimary flex items-center justify-center text-2xl mb-4">
-                    📄
+            <!-- Original Version Card -->
+            <div class="glass-card p-6 border-slate-800">
+                <div class="flex items-center justify-between pb-4 border-b border-slate-800 mb-6">
+                    <div>
+                        <h3 class="text-xl font-bold text-slate-300">Original Features</h3>
+                        <p class="text-xs text-slate-500">Core Foundations</p>
+                    </div>
+                    <span class="px-3 py-1 bg-slate-800 text-slate-400 font-mono text-xs font-semibold rounded-lg">V1 Release</span>
                 </div>
-                <h3 class="text-lg font-bold text-white mb-2">PDF & Word Reviewer Support</h3>
-                <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
-                    Mag-upload lang ng PDF o Word file, at kusa itong babasahin ng AI para gawan ka ng practice reviewer.
-                </p>
+
+                <ul class="space-y-3.5 text-xs sm:text-sm text-slate-400">
+                    <li class="flex items-start gap-3">
+                        <span class="text-slate-500 font-bold">•</span>
+                        <span>Generate quizzes from written topics</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <span class="text-slate-500 font-bold">•</span>
+                        <span>Upload PDF and Word documents as study sources</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <span class="text-slate-500 font-bold">•</span>
+                        <span>Support for Multiple Choice, True/False, and Identification</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <span class="text-slate-500 font-bold">•</span>
+                        <span>Instant answer validation and explanations</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <span class="text-slate-500 font-bold">•</span>
+                        <span>Basic final score and percentage display</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <span class="text-slate-500 font-bold">•</span>
+                        <span>Local quiz library to save and review decks</span>
+                    </li>
+                </ul>
             </div>
 
-            <!-- Feature 2 -->
+            <!-- Version 2 Card (Highlighted) -->
+            <div class="glass-card p-6 border-appPrimary/40 relative overflow-hidden bg-appPrimary/5">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-appPrimary/10 rounded-full blur-2xl pointer-events-none"></div>
+
+                <div class="flex items-center justify-between pb-4 border-b border-appPrimary/20 mb-6">
+                    <div>
+                        <h3 class="text-xl font-bold text-white flex items-center gap-2">
+                            Version 2 Enhancements
+                            <span class="text-xs px-2 py-0.5 bg-appPrimary text-white rounded font-mono">NEW</span>
+                        </h3>
+                        <p class="text-xs text-indigo-300">More control, flexibility, & analytics</p>
+                    </div>
+                    <span class="px-3 py-1 tag-v2 text-white font-mono text-xs font-bold rounded-lg shadow-md">V2 Upgrade</span>
+                </div>
+
+                <ul class="space-y-3.5 text-xs sm:text-sm text-slate-200">
+                    <li class="flex items-start gap-3">
+                        <span class="text-appPrimary font-bold">✓</span>
+                        <span><strong>Advanced Setup:</strong> Custom question counts, difficulty levels (Easy, Medium, Hard), situational questions, and timed/untimed modes.</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <span class="text-appPrimary font-bold">✓</span>
+                        <span><strong>Interactive Flashcards:</strong> One question at a time, hidden answers until response, submission reveal, and live countdown timer.</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <span class="text-appPrimary font-bold">✓</span>
+                        <span><strong>Bookmark System:</strong> Save difficult questions locally for dedicated later review.</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <span class="text-appPrimary font-bold">✓</span>
+                        <span><strong>Mistake Review & Retakes:</strong> Specifically filter incorrectly answered questions or retake completed decks.</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <span class="text-appPrimary font-bold">✓</span>
+                        <span><strong>Personal Progress:</strong> View completed quiz counts and overall accuracy stats directly in your Library.</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <span class="text-appPrimary font-bold">✓</span>
+                        <span><strong>Quit Confirmation Safety:</strong> Prevents accidental loss of active quiz progress.</span>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- SECTION 2: DETAILED V2 FEATURE BREAKDOWN -->
+    <section id="features" class="max-w-6xl mx-auto px-4 sm:px-6 py-12">
+        <div class="text-center mb-12">
+            <span class="text-xs font-mono font-bold text-appPrimary uppercase tracking-widest">Capabilities</span>
+            <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-white mt-1">Complete Feature Overview</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            
+            <!-- Category 1: Quiz Setup -->
             <div class="glass-card p-6">
-                <div class="w-12 h-12 rounded-xl bg-purple-500/15 text-purple-400 flex items-center justify-center text-2xl mb-4">
+                <div class="w-10 h-10 rounded-xl bg-appPrimary/20 text-appPrimary flex items-center justify-center font-bold text-lg mb-4">
                     ⚙️
                 </div>
-                <h3 class="text-lg font-bold text-white mb-2">Customized Quiz Settings</h3>
-                <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
-                    Ikaw ang may kontrol. Pumili ng bilang ng tanong, uri (Multiple Choice, True/False, Identification), at wika.
-                </p>
+                <h3 class="text-lg font-bold text-white mb-3">Custom Quiz Setup</h3>
+                <ul class="space-y-2 text-xs text-slate-300">
+                    <li>• Choose exact question counts</li>
+                    <li>• Combine multiple question types</li>
+                    <li>• Support situational scenario questions</li>
+                    <li>• Easy, Medium, or Hard difficulty</li>
+                    <li>• Random or Sequential question order</li>
+                    <li>• Timed or Untimed quiz modes</li>
+                    <li>• Bilingual: English or Filipino</li>
+                </ul>
             </div>
 
-            <!-- Feature 3 -->
+            <!-- Category 2: Interactive Flashcards -->
             <div class="glass-card p-6">
-                <div class="w-12 h-12 rounded-xl bg-indigo-500/15 text-indigo-400 flex items-center justify-center text-2xl mb-4">
+                <div class="w-10 h-10 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center font-bold text-lg mb-4">
                     🎴
                 </div>
-                <h3 class="text-lg font-bold text-white mb-2">Interactive Flashcards</h3>
-                <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
-                    Gamitin ang Flashcard Mode para sa mabilisang kabisaduhan at active recall bago ang exam.
-                </p>
+                <h3 class="text-lg font-bold text-white mb-3">Flashcard Study Experience</h3>
+                <ul class="space-y-2 text-xs text-slate-300">
+                    <li>• Focused 1-question-at-a-time view</li>
+                    <li>• Hidden answers until submitted</li>
+                    <li>• Text input for Identification questions</li>
+                    <li>• Immediate correct/incorrect status</li>
+                    <li>• In-depth answer explanations</li>
+                    <li>• Countdown timer visualizer</li>
+                </ul>
             </div>
 
-            <!-- Feature 4 -->
+            <!-- Category 3: Progress & Review -->
             <div class="glass-card p-6">
-                <div class="w-12 h-12 rounded-xl bg-cyan-500/15 text-cyan-400 flex items-center justify-center text-2xl mb-4">
-                    🇵🇭
-                </div>
-                <h3 class="text-lg font-bold text-white mb-2">Bilingual Support</h3>
-                <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
-                    Suportado ang parehong wikang Filipino at English para sa mas madaling pag-unawa ng mga aralin.
-                </p>
-            </div>
-
-            <!-- Feature 5 -->
-            <div class="glass-card p-6">
-                <div class="w-12 h-12 rounded-xl bg-emerald-500/15 text-emerald-400 flex items-center justify-center text-2xl mb-4">
+                <div class="w-10 h-10 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center font-bold text-lg mb-4">
                     📊
                 </div>
-                <h3 class="text-lg font-bold text-white mb-2">Score & Progress Tracking</h3>
-                <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
-                    Makikita mo agad ang tama at maling sagot pati na rin ang paliwanag para malaman kung saan ka pa dapat mag-review.
+                <h3 class="text-lg font-bold text-white mb-3">Analytics & Review</h3>
+                <ul class="space-y-2 text-xs text-slate-300">
+                    <li>• Bookmark challenging questions</li>
+                    <li>• Review incorrect questions specifically</li>
+                    <li>• Retake completed quizzes anytime</li>
+                    <li>• Detailed breakdown (Correct, Incorrect, Total)</li>
+                    <li>• Final percentage calculation</li>
+                    <li>• Track overall accuracy & total decks completed</li>
+                </ul>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- SECTION 3: TYPICAL USER FLOW DIAGRAM -->
+    <section class="max-w-5xl mx-auto px-4 sm:px-6 py-12">
+        <div class="glass-card p-8 border-appPrimary/20 relative">
+            <div class="text-center mb-8">
+                <span class="text-xs font-mono font-bold text-appPrimary uppercase tracking-widest">Workflow</span>
+                <h2 class="text-2xl sm:text-3xl font-extrabold text-white mt-1">Typical User Flow</h2>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                
+                <!-- Step 1 -->
+                <div class="p-4 bg-slate-900/80 rounded-xl border border-slate-800">
+                    <span class="text-xs font-mono text-appPrimary font-bold block mb-1">STEP 01</span>
+                    <h4 class="text-sm font-bold text-white mb-1">Input Source</h4>
+                    <p class="text-[11px] text-slate-400">Provide a topic or upload PDF/Word reviewer document.</p>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="p-4 bg-slate-900/80 rounded-xl border border-slate-800">
+                    <span class="text-xs font-mono text-appPrimary font-bold block mb-1">STEP 02</span>
+                    <h4 class="text-sm font-bold text-white mb-1">Configure</h4>
+                    <p class="text-[11px] text-slate-400">Select language, types, difficulty, ordering, & timer.</p>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="p-4 bg-slate-900/80 rounded-xl border border-slate-800">
+                    <span class="text-xs font-mono text-appPrimary font-bold block mb-1">STEP 03</span>
+                    <h4 class="text-sm font-bold text-white mb-1">Study Cards</h4>
+                    <p class="text-[11px] text-slate-400">Answer flashcards & receive instant explanations.</p>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="p-4 bg-slate-900/80 rounded-xl border border-slate-800">
+                    <span class="text-xs font-mono text-appPrimary font-bold block mb-1">STEP 04</span>
+                    <h4 class="text-sm font-bold text-white mb-1">Review & Track</h4>
+                    <p class="text-[11px] text-slate-400">View final score, review mistakes, or retake quizzes.</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 4: PRIVACY, LOCAL STORAGE & PROJECT DIRECTION -->
+    <section class="max-w-5xl mx-auto px-4 sm:px-6 py-12">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            
+            <!-- Privacy Card -->
+            <div class="glass-card p-6 border-amber-500/20 bg-amber-500/5">
+                <div class="flex items-center gap-2 mb-3">
+                    <span class="text-xl">🔒</span>
+                    <h3 class="text-lg font-bold text-white">Privacy & Local Storage</h3>
+                </div>
+                <p class="text-xs sm:text-sm text-slate-300 leading-relaxed mb-3">
+                    AralAI works entirely without user accounts. Your generated quizzes, bookmarked questions, and progress analytics are stored locally on your device.
+                </p>
+                <p class="text-xs text-slate-400 leading-relaxed">
+                    <em>Note: Data remains saved when reopening the app, but clearing app storage or uninstalling will erase local decks as there is currently no cloud sync.</em>
                 </p>
             </div>
 
-            <!-- Feature 6 -->
-            <div class="glass-card p-6">
-                <div class="w-12 h-12 rounded-xl bg-pink-500/15 text-pink-400 flex items-center justify-center text-2xl mb-4">
-                    💾
+            <!-- Direction Card -->
+            <div class="glass-card p-6 border-indigo-500/20 bg-indigo-500/5">
+                <div class="flex items-center gap-2 mb-3">
+                    <span class="text-xl">🎯</span>
+                    <h3 class="text-lg font-bold text-white">Project Direction</h3>
                 </div>
-                <h3 class="text-lg font-bold text-white mb-2">Saved Quizzes Archive</h3>
                 <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
-                    I-save ang mga ginawa mong quiz para ma-review at mabalikan mo sila kahit kailan mo gusto.
+                    AralAI is designed to become an adaptive personal study companion. The project focuses on providing an enjoyable flashcard experience, flexible AI quiz generation, crystal-clear answer explanations, and frictionless progress tracking without signup barriers.
                 </p>
             </div>
 
         </div>
     </section>
 
-    <!-- Disclaimer & Bug Report -->
-    <section class="max-w-4xl mx-auto px-4 sm:px-6 py-8 my-6">
-        <div class="p-6 sm:p-8 glass-card border border-amber-500/30 bg-amber-500/5 relative">
-            <div class="flex items-center gap-2 mb-3">
-                <span class="px-2.5 py-1 bg-amber-500/20 text-amber-300 font-mono font-bold text-xs rounded-md">⚠️ EARLY RELEASE DISCLAIMER</span>
-            </div>
-            <h3 class="text-lg font-bold text-white mb-2">Expect Some Bugs!</h3>
-            <p class="text-xs sm:text-sm text-slate-300 leading-relaxed mb-6">
-                Bago pa lamang na-publish ang AralAI app. Maaari kang makaranas ng ilang minor bugs habang ginagamit ito. Kung may maencounter kang problema o may suggestions ka, maaari mo akong i-message agad sa:
+    <!-- SECTION 5: EARLY RELEASE BUG REPORT / CONTACT -->
+    <section class="max-w-4xl mx-auto px-4 sm:px-6 py-6 mb-12">
+        <div class="p-6 sm:p-8 glass-card border border-slate-700 relative text-center">
+            <h3 class="text-lg font-bold text-white mb-2">Feedback & Bug Reporting</h3>
+            <p class="text-xs sm:text-sm text-slate-300 max-w-xl mx-auto mb-6">
+                Encountered an issue or have feature suggestions for future AralAI updates? Feel free to reach out directly:
             </p>
 
-            <div class="flex flex-wrap gap-3">
-                <!-- Facebook Button -->
+            <div class="flex flex-wrap justify-center gap-4">
                 <a href="https://www.facebook.com/rhonbenedict.baylon" target="_blank" rel="noopener noreferrer" 
-                   class="inline-flex items-center gap-2 px-4 py-2.5 bg-[#1877F2] hover:bg-blue-600 text-white font-medium text-xs rounded-xl transition-all shadow-md">
+                   class="inline-flex items-center gap-2 px-5 py-2.5 bg-[#1877F2] hover:bg-blue-600 text-white font-medium text-xs rounded-xl transition-all shadow-md">
                     <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
                         <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
                     </svg>
-                    Facebook Page
+                    Facebook Contact
                 </a>
 
-                <!-- Email Button -->
                 <a href="mailto:rhon.baylon0503@gmail.com" 
-                   class="inline-flex items-center gap-2 px-4 py-2.5 bg-[#EA4335] hover:bg-red-600 text-white font-medium text-xs rounded-xl transition-all shadow-md">
+                   class="inline-flex items-center gap-2 px-5 py-2.5 bg-[#EA4335] hover:bg-red-600 text-white font-medium text-xs rounded-xl transition-all shadow-md">
                     <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
                         <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
                     </svg>
-                    Gmail Contact
+                    Email Support
                 </a>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="max-w-7xl mx-auto px-4 sm:px-6 py-8 border-t border-slate-800/80 mt-12">
+    <footer class="max-w-7xl mx-auto px-4 sm:px-6 py-8 border-t border-slate-800/80">
         <div class="flex flex-col md:flex-row justify-between items-center gap-4 text-center md:text-left">
             <div>
-                <p class="text-lg font-bold text-white">AralAI Mobile Application</p>
-                <p class="text-xs text-slate-400 mt-0.5">Interactive & Personalized Learning for Students.</p>
+                <p class="text-base font-bold text-white">AralAI Mobile Application V2</p>
+                <p class="text-xs text-slate-400 mt-0.5">Interactive & Personalized AI Learning for Students.</p>
             </div>
 
             <div class="px-4 py-2 bg-slate-900 border border-slate-800 rounded-xl">
