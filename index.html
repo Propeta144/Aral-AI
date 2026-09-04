@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AralAI — AI Quiz & Flashcard Generator</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        neonGreen: '#00ff66',
+                        neonCyan: '#00f0ff',
+                        neonPurple: '#7000ff',
+                        neonPink: '#ff007a',
+                        darkBg: '#080811',
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@700;800&family=Plus+Jakarta+Sans:wght@400;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Custom Responsive Maximalist CSS -->
+    <style>
+        body {
+            background-color: #05050a;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* Responsive Cyber Grid Background */
+        .bg-grid-pattern {
+            background-size: 30px 30px;
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+        }
+        @media (min-width: 768px) {
+            .bg-grid-pattern {
+                background-size: 40px 40px;
+            }
+        }
+
+        /* Dynamic Neon Glow Orbs */
+        .glow-orb-1 {
+            background: radial-gradient(circle, rgba(0, 255, 102, 0.2) 0%, rgba(0,0,0,0) 70%);
+        }
+        .glow-orb-2 {
+            background: radial-gradient(circle, rgba(112, 0, 255, 0.25) 0%, rgba(0,0,0,0) 70%);
+        }
+
+        /* Glassmorphism Cards */
+        .glass-card {
+            background: rgba(15, 16, 30, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 2px solid rgba(255, 255, 255, 0.12);
+        }
+        .glass-card:hover {
+            border-color: #00ff66;
+            box-shadow: 0 0 25px rgba(0, 255, 102, 0.2);
+        }
+
+        /* Text Stroke Effect */
+        .text-stroke {
+            -webkit-text-stroke: 1px #ffffff;
+            color: transparent;
+        }
+        @media (min-width: 768px) {
+            .text-stroke {
+                -webkit-text-stroke: 1.5px #ffffff;
+            }
+        }
+
+        /* Floating Sticker Animation */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-8px) rotate(2deg); }
+        }
+        .animate-float {
+            animation: float 4s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="bg-grid-pattern antialiased selection:bg-neonGreen selection:text-black">
+
+    <!-- Background Glow Orbs -->
+    <div class="fixed top-0 left-1/4 w-72 sm:w-[500px] h-72 sm:h-[500px] glow-orb-1 pointer-events-none -z-10 animate-pulse"></div>
+    <div class="fixed bottom-10 right-0 w-80 sm:w-[600px] h-80 sm:h-[600px] glow-orb-2 pointer-events-none -z-10"></div>
+
+    <!-- Top Announcement Bar -->
+    <div class="bg-gradient-to-r from-neonPurple via-neonPink to-neonGreen text-black font-extrabold text-[10px] sm:text-xs py-1.5 px-3 uppercase tracking-widest overflow-hidden whitespace-nowrap shadow-lg">
+        <div class="flex gap-4 sm:gap-8 justify-center items-center">
+            <span>📄 PDF & WORD TO QUIZ • 🎴 FLASHCARDS GENERATOR • 🇵🇭 ENGLISH & FILIPINO SUPPORT • 📊 SCORE TRACKER</span>
+        </div>
+    </div>
+
+    <!-- Navigation Header -->
+    <nav class="max-w-7xl mx-auto px-4 sm:px-6 py-5 sm:py-8 flex justify-between items-center border-b border-white/10 sm:border-none">
+        <div class="flex items-center gap-2.5 sm:gap-3">
+            <div class="w-9 h-9 sm:w-12 sm:h-12 bg-neonGreen text-black font-black text-lg sm:text-2xl flex items-center justify-center transform -rotate-3 border-2 border-white shadow-[3px_3px_0px_0px_rgba(255,255,255,1)] sm:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]">
+                AI
+            </div>
+            <span class="text-xl sm:text-3xl font-black tracking-tighter uppercase italic">
+                Aral<span class="text-neonGreen">AI</span>
+            </span>
+        </div>
+        <a href="#download" class="px-3.5 py-2 sm:px-6 sm:py-2.5 bg-transparent border-2 border-neonCyan text-neonCyan font-mono font-bold text-xs sm:text-sm tracking-wider uppercase hover:bg-neonCyan hover:text-black transition-all shadow-[3px_3px_0px_0px_#00f0ff] sm:shadow-[4px_4px_0px_0px_#00f0ff] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none">
+            [ GET_APP ]
+        </a>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="max-w-6xl mx-auto px-4 sm:px-6 pt-8 sm:pt-16 pb-12 sm:pb-20 text-center relative">
+        
+        <!-- Floating Stickers (Visible on PC / Tablets) -->
+        <div class="hidden lg:block absolute top-6 left-0 bg-neonPink text-white font-mono font-extrabold text-xs px-4 py-2 rotate-12 border-2 border-white shadow-[4px_4px_0px_0px_#fff] animate-float">
+            📁 UPLOAD PDF / WORD
+        </div>
+        <div class="hidden lg:block absolute bottom-16 right-0 bg-neonCyan text-black font-mono font-extrabold text-xs px-4 py-2 -rotate-6 border-2 border-black shadow-[4px_4px_0px_0px_#000] animate-float">
+            🇵🇭 ENGLISH & FILIPINO
+        </div>
+
+        <!-- Tag badge -->
+        <div class="inline-block px-3.5 py-1.5 sm:px-5 sm:py-2 bg-slate-900 border-2 border-neonGreen text-neonGreen font-mono font-bold text-[10px] sm:text-xs uppercase tracking-widest mb-6 sm:mb-8 shadow-[4px_4px_0px_0px_#00ff66] sm:shadow-[6px_6px_0px_0px_#00ff66]">
+            ● Personal Smart Quiz & Flashcard Creator
+        </div>
+
+        <!-- Hero Title (Responsive scaling for CP, Tablet, PC) -->
+        <h1 class="text-3xl sm:text-6xl md:text-7xl lg:text-8xl font-black uppercase tracking-tight leading-tight sm:leading-none mb-6 sm:mb-8">
+            CONVERT DOCS INTO <br class="hidden sm:inline"/>
+            <span class="bg-gradient-to-r from-neonGreen via-neonCyan to-neonPink bg-clip-text text-transparent">SMART QUIZZES</span>
+        </h1>
+
+        <p class="text-sm sm:text-xl md:text-2xl text-slate-300 max-w-3xl mx-auto font-medium mb-8 sm:mb-12 leading-relaxed px-2">
+            Turn topics, PDF, or Word documents into custom quizzes and flashcards instantly. Customize questions, switch languages between <span class="text-white font-bold underline decoration-neonGreen decoration-2 sm:decoration-4">English & Filipino</span>, answer interactively, and track your progress!
+        </p>
+
+        <!-- Main Download Card -->
+        <div id="download" class="max-w-xl mx-auto p-5 sm:p-8 glass-card rounded-none border-2 border-white/20 relative shadow-[6px_6px_0px_0px_rgba(112,0,255,0.8)] sm:shadow-[10px_10px_0px_0px_rgba(112,0,255,0.8)]">
+            <h2 class="text-xl sm:text-2xl font-black uppercase mb-1.5 sm:mb-2 text-white">START STUDYING SMARTER NOW</h2>
+            <p class="text-[10px] sm:text-xs font-mono text-slate-400 mb-5 sm:mb-6">DOWNLOAD THE APP BUILD DIRECTLY VIA GOOGLE DRIVE</p>
+
+            <!-- PASTE YOUR GOOGLE DRIVE URL HERE -->
+            <a href="https://drive.google.com/file/d/1Cw08ZiICP79yyMge4U_MhtMrfLcv6Z62/view?usp=drive_link" target="_blank" rel="noopener noreferrer" 
+               class="block w-full py-4 sm:py-5 bg-neonGreen hover:bg-neonCyan text-black font-black text-base sm:text-xl tracking-wider uppercase border-2 border-white transition-all transform hover:-translate-y-1 shadow-[4px_4px_0px_0px_#fff] sm:shadow-[6px_6px_0px_0px_#fff] active:translate-y-0 active:shadow-none">
+                📥 DOWNLOAD ARALAI APP
+            </a>
+            
+            <div class="flex flex-wrap justify-center items-center gap-2 sm:gap-4 mt-4 font-mono text-[10px] sm:text-xs text-slate-400">
+                <span>✓ Direct GDrive Link</span>
+                <span class="hidden sm:inline">•</span>
+                <span>✓ Mobile Application</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section (Responsive Grid) -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 py-10 sm:py-20">
+        <div class="text-center mb-10 sm:mb-16">
+            <h2 class="text-3xl sm:text-5xl md:text-6xl font-black uppercase tracking-tight">
+                SYSTEM <span class="text-stroke">CAPABILITIES</span>
+            </h2>
+        </div>
+
+        <!-- 1 Col (CP), 2 Col (Tablet), 3 Col (PC) -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+            
+            <!-- Feature 1 -->
+            <div class="glass-card p-6 sm:p-8 relative group transition-all duration-300">
+                <div class="text-4xl sm:text-5xl mb-4 sm:mb-6">📄</div>
+                <div class="font-mono text-[10px] sm:text-xs text-neonGreen mb-2">01 // INSTANT GENERATION</div>
+                <h3 class="text-lg sm:text-xl font-extrabold uppercase mb-2 sm:mb-3 text-white">Document to Quiz</h3>
+                <p class="text-xs sm:text-sm text-slate-300 leading-relaxed font-sans">
+                    Simply type a topic or upload your PDF and Word files. AralAI instantly transforms your reviewer documents into practice quizzes and interactive flashcards.
+                </p>
+            </div>
+
+            <!-- Feature 2 -->
+            <div class="glass-card p-6 sm:p-8 relative group transition-all duration-300">
+                <div class="text-4xl sm:text-5xl mb-4 sm:mb-6">⚙️</div>
+                <div class="font-mono text-[10px] sm:text-xs text-neonCyan mb-2">02 // FULL CUSTOMIZATION</div>
+                <h3 class="text-lg sm:text-xl font-extrabold uppercase mb-2 sm:mb-3 text-white">Custom Quiz Setup</h3>
+                <p class="text-xs sm:text-sm text-slate-300 leading-relaxed font-sans">
+                    Control how you study. Set your preferred number of items, choose question types, and freely switch between English and Filipino languages.
+                </p>
+            </div>
+
+            <!-- Feature 3 -->
+            <div class="glass-card p-6 sm:p-8 relative group transition-all duration-300">
+                <div class="text-4xl sm:text-5xl mb-4 sm:mb-6">💡</div>
+                <div class="font-mono text-[10px] sm:text-xs text-neonPink mb-2">03 // INTERACTIVE REVIEW</div>
+                <h3 class="text-lg sm:text-xl font-extrabold uppercase mb-2 sm:mb-3 text-white">Smart Explanations</h3>
+                <p class="text-xs sm:text-sm text-slate-300 leading-relaxed font-sans">
+                    Answer questions interactively and get immediate, detailed explanations for every answer so you truly understand the concept behind every item.
+                </p>
+            </div>
+
+            <!-- Feature 4 -->
+            <div class="glass-card p-6 sm:p-8 relative group transition-all duration-300">
+                <div class="text-4xl sm:text-5xl mb-4 sm:mb-6">📊</div>
+                <div class="font-mono text-[10px] sm:text-xs text-neonPurple mb-2">04 // ANALYTICS</div>
+                <h3 class="text-lg sm:text-xl font-extrabold uppercase mb-2 sm:mb-3 text-white">Score Tracking</h3>
+                <p class="text-xs sm:text-sm text-slate-300 leading-relaxed font-sans">
+                    Keep tabs on your mastery. Real-time tracking of correct and incorrect answers helps you pinpoint weak areas that need more review.
+                </p>
+            </div>
+
+            <!-- Feature 5 -->
+            <div class="glass-card p-6 sm:p-8 relative group transition-all duration-300">
+                <div class="text-4xl sm:text-5xl mb-4 sm:mb-6">🗂️</div>
+                <div class="font-mono text-[10px] sm:text-xs text-neonGreen mb-2">05 // ARCHIVE</div>
+                <h3 class="text-lg sm:text-xl font-extrabold uppercase mb-2 sm:mb-3 text-white">Saved Quizzes</h3>
+                <p class="text-xs sm:text-sm text-slate-300 leading-relaxed font-sans">
+                    Never lose your generated reviewer. Save all your customized quizzes and flashcard sets to review them anytime before exams.
+                </p>
+            </div>
+
+            <!-- Feature 6 -->
+            <div class="glass-card p-6 sm:p-8 relative group transition-all duration-300">
+                <div class="text-4xl sm:text-5xl mb-4 sm:mb-6">🎴</div>
+                <div class="font-mono text-[10px] sm:text-xs text-neonCyan mb-2">06 // MEMORIZATION</div>
+                <h3 class="text-lg sm:text-xl font-extrabold uppercase mb-2 sm:mb-3 text-white">Flashcard Mode</h3>
+                <p class="text-xs sm:text-sm text-slate-300 leading-relaxed font-sans">
+                    Flip through generated flashcards for rapid-fire review sessions and active recall training on key terms and definitions.
+                </p>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Disclaimer & Bug Report Section -->
+    <section class="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-12 mb-8 sm:mb-12">
+        <div class="p-5 sm:p-8 bg-slate-900/90 border-2 border-neonPink relative shadow-[5px_5px_0px_0px_#ff007a] sm:shadow-[8px_8px_0px_0px_#ff007a]">
+            <div class="flex items-center gap-3 mb-3 sm:mb-4">
+                <span class="px-2 py-0.5 sm:px-2.5 sm:py-1 bg-neonPink text-black font-mono font-extrabold text-[10px] sm:text-xs uppercase">⚠️ EARLY RELEASE DISCLAIMER</span>
+            </div>
+            <h3 class="text-lg sm:text-xl font-black uppercase text-white mb-2">EXPECT SOME BUGS!</h3>
+            <p class="text-xs sm:text-sm text-slate-300 leading-relaxed mb-6">
+                Bago pa lamang na-publish ang AralAI app. Dahil dito, maaari kang makaranas ng ilang minor bugs o glitches habang ginagamit ito. Kung may maencounter kang problema o may suggestions ka para mapaganda ang app, huwag mag-atubiling mag-report agad sa akin:
+            </p>
+
+            <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 items-stretch sm:items-center">
+                <!-- Facebook Link Button -->
+                <a href="https://www.facebook.com/rhonbenedict.baylon" target="_blank" rel="noopener noreferrer" 
+                   class="inline-flex items-center justify-center gap-2.5 px-5 py-3 bg-[#1877F2] hover:bg-blue-600 text-white font-mono font-bold text-xs uppercase border-2 border-white transition-all shadow-[3px_3px_0px_0px_#fff] sm:shadow-[4px_4px_0px_0px_#fff] active:translate-y-0.5 active:shadow-none">
+                    <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                    </svg>
+                    Facebook Page
+                </a>
+
+                <!-- Email Link Button -->
+                <a href="mailto:rhon.baylon0503@gmail.com" 
+                   class="inline-flex items-center justify-center gap-2.5 px-5 py-3 bg-[#EA4335] hover:bg-red-600 text-white font-mono font-bold text-xs uppercase border-2 border-white transition-all shadow-[3px_3px_0px_0px_#fff] sm:shadow-[4px_4px_0px_0px_#fff] active:translate-y-0.5 active:shadow-none">
+                    <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                        <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                    </svg>
+                    Gmail
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Responsive Footer -->
+    <footer class="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12 border-t-2 border-white/10 mt-8 sm:mt-12">
+        <div class="flex flex-col md:flex-row justify-between items-center gap-6 text-center md:text-left">
+            <div>
+                <p class="text-xl sm:text-2xl font-black uppercase">AralAI App</p>
+                <p class="text-[10px] sm:text-xs font-mono text-slate-400 mt-1">Smart Document-to-Quiz & Flashcard Mobile Application.</p>
+            </div>
+
+            <!-- Developer Credit -->
+            <div class="w-full md:w-auto p-4 bg-slate-900/90 border-2 border-neonGreen text-center md:text-right shadow-[4px_4px_0px_0px_#00ff66]">
+                <p class="text-[10px] sm:text-xs font-mono text-slate-400 uppercase">System Developed By:</p>
+                <p class="text-sm sm:text-base font-extrabold text-white">Rhon Baylon</p>
+                <p class="text-xs font-mono text-neonGreen font-bold">Alias: propeta144</p>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
