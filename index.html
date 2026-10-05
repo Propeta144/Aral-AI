@@ -1,291 +1,711 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aral AI V2.1 — AI-Powered Study Assistant</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        appPrimary: '#6366F1',
-                        appPurpleDark: '#4338CA',
-                        appDarkBg: '#090D16',
-                        appCardBg: '#111827',
-                        neonPurple: '#8B5CF6',
-                        neonCyan: '#06B6D4',
-                    },
-                    fontFamily: {
-                        sans: ['Plus Jakarta Sans', 'sans-serif'],
-                        mono: ['JetBrains Mono', 'monospace'],
-                    }
-                }
-            }
-        }
-    </script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>AralAI: Turn any handout into a quiz in seconds</title>
+  <meta name="description" content="AralAI is a free AI study companion for Filipino students. Type a topic or upload a PDF or Word handout and get a quiz or flashcards in seconds. Android, no account needed.">
+  <meta property="og:title" content="AralAI: Turn any handout into a quiz in seconds">
+  <meta property="og:description" content="Free AI quizzes and flashcards from your own handouts. Filipino or English. No account needed.">
+  <meta name="theme-color" content="#4F46E5">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%234F46E5'/%3E%3Cpath fill='white' d='M7 13.2v2.6l5 2.7 5-2.7v-2.6l-5 2.7-5-2.7zM12 5.5 4.5 9.6 12 13.7l6-3.3v4.3h1.5V9.6L12 5.5z'/%3E%3C/svg%3E">
 
-    <style>
-        body {
-            background-color: #070a12;
-            color: #f8fafc;
-            overflow-x: hidden;
-        }
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-        .bg-cyber-grid {
-            background-size: 40px 40px;
-            background-image: 
-                linear-gradient(to right, rgba(99, 102, 241, 0.07) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(99, 102, 241, 0.07) 1px, transparent 1px);
-        }
+  <style>
+    :root {
+      color-scheme: light;
+      --indigo: #4F46E5;
+      --indigo-dk: #3730A3;
+      --indigo-lt: #EEF2FF;
+      --bg: #F5F7FB;
+      --surface: #FFFFFF;
+      --ink: #0F172A;
+      --muted: #64748B;
+      --line: #E2E8F0;
+      --green: #16A34A;
+      --green-lt: #DCFCE7;
+      --red: #DC2626;
+      --red-lt: #FEE2E2;
+      --amber: #F59E0B;
+      --pad: #FBF3B0;
+      --pad-rule: #A9C7E8;
+      --pad-margin: #E88A7E;
+      --display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+      --body: "Figtree", "Segoe UI", system-ui, -apple-system, sans-serif;
+      --wrap: 1120px;
+    }
 
-        .glow-orb-purple {
-            background: radial-gradient(circle, rgba(139, 92, 246, 0.22) 0%, rgba(0,0,0,0) 70%);
-        }
-        .glow-orb-cyan {
-            background: radial-gradient(circle, rgba(6, 182, 212, 0.18) 0%, rgba(0,0,0,0) 70%);
-        }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--body);
+      font-size: 17px;
+      line-height: 1.6;
+      padding-bottom: env(safe-area-inset-bottom, 0px);
+    }
+    img, svg { max-width: 100%; }
+    a { color: var(--indigo); }
+    h1, h2, h3 { font-family: var(--display); line-height: 1.1; margin: 0; letter-spacing: -0.02em; }
+    p { margin: 0; }
+    :focus-visible { outline: 3px solid var(--amber); outline-offset: 3px; border-radius: 6px; }
 
-        .glass-card {
-            background: rgba(17, 24, 39, 0.75);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 16px;
-        }
-        .glass-card:hover {
-            border-color: rgba(139, 92, 246, 0.4);
-            box-shadow: 0 10px 30px -10px rgba(139, 92, 246, 0.25);
-        }
+    .wrap { max-width: var(--wrap); margin: 0 auto; padding: 0 20px; }
+    .section { padding: 88px 0; }
+    .section-head { max-width: 640px; margin-bottom: 44px; }
+    .section-head h2 { font-size: clamp(30px, 4.4vw, 44px); font-weight: 800; }
+    .section-head p { color: var(--muted); margin-top: 12px; font-size: 18px; }
 
-        .badge-v2 {
-            background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
-        }
-    </style>
+    /* ---------- Buttons ---------- */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+      font: 700 17px/1 var(--body);
+      padding: 17px 26px; border-radius: 14px; text-decoration: none; border: 0; cursor: pointer;
+      transition: background-color .15s, transform .15s;
+    }
+    .btn-primary { background: var(--indigo); color: #fff; box-shadow: 0 6px 0 var(--indigo-dk); }
+    .btn-primary:hover { background: #4338CA; }
+    .btn-primary:active { transform: translateY(4px); box-shadow: 0 2px 0 var(--indigo-dk); }
+    .btn-light { background: #fff; color: var(--indigo-dk); box-shadow: 0 6px 0 rgba(15,23,42,.35); }
+    .btn-light:hover { background: var(--indigo-lt); }
+    .btn-light:active { transform: translateY(4px); box-shadow: 0 2px 0 rgba(15,23,42,.35); }
+    .btn svg { width: 22px; height: 22px; flex: none; }
+
+    /* ---------- Nav ---------- */
+    .nav {
+      position: sticky; top: 0; z-index: 20;
+      padding-top: env(safe-area-inset-top, 0px);
+      background: rgba(245,247,251,.88);
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid transparent;
+    }
+    .nav.scrolled { border-bottom-color: var(--line); }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 68px; gap: 16px; }
+    .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--ink); }
+    .logo-mark { width: 38px; height: 38px; border-radius: 11px; background: var(--indigo); display: grid; place-items: center; }
+    .logo-mark svg { width: 24px; height: 24px; fill: #fff; }
+    .logo-word { font: 800 23px/1 var(--display); letter-spacing: -0.03em; }
+    .logo-word span { color: var(--indigo); }
+    .nav-links { display: flex; align-items: center; gap: 28px; }
+    .nav-links a { color: var(--ink); text-decoration: none; font-weight: 600; font-size: 15px; }
+    .nav-links a:hover { color: var(--indigo); }
+    .nav-links .nav-cta { background: var(--indigo); color: #fff; padding: 10px 16px; border-radius: 10px; }
+    .nav-links .nav-cta:hover { background: #4338CA; color: #fff; }
+    @media (max-width: 760px) { .nav-links a:not(.nav-cta) { display: none; } }
+
+    /* ---------- Hero ---------- */
+    .hero { padding: 56px 0 96px; overflow: hidden; }
+    .hero-grid { display: grid; grid-template-columns: 1.05fr 1fr; gap: 56px; align-items: center; }
+    .new-pill {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: #fff; border: 1px solid var(--line); border-radius: 999px;
+      padding: 6px 14px 6px 8px; font-size: 14px; font-weight: 600; color: var(--ink); text-decoration: none;
+    }
+    .new-pill b { background: var(--amber); color: #fff; border-radius: 999px; padding: 2px 9px; font-size: 12px; }
+    .new-pill:hover { border-color: var(--indigo); }
+    .hero h1 { font-size: clamp(40px, 6.4vw, 72px); font-weight: 800; margin: 22px 0 20px; letter-spacing: -0.035em; }
+    .hero-sub { font-size: clamp(18px, 2vw, 20px); color: #334155; max-width: 520px; }
+    .hero-sub-fil { color: var(--muted); font-size: 17px; margin-top: 10px; font-style: italic; }
+    .hero-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 18px 24px; margin-top: 34px; }
+    .hero-facts { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 6px 18px; color: var(--muted); font-size: 15px; font-weight: 500; }
+    .hero-facts li { display: flex; align-items: center; gap: 6px; }
+    .hero-facts svg { width: 16px; height: 16px; stroke: var(--green); fill: none; stroke-width: 3; }
+
+    /* Handout + quiz stage */
+    .stage { position: relative; display: grid; }
+    .pad {
+      position: relative; width: 80%;
+      background-color: var(--pad);
+      background-image:
+        linear-gradient(to right, transparent 46px, var(--pad-margin) 46px, var(--pad-margin) 48px, transparent 48px),
+        repeating-linear-gradient(to bottom, transparent 0 27px, var(--pad-rule) 27px 28px);
+      background-position: 0 0, 0 58px;
+      border-radius: 4px;
+      padding: 22px 22px 34px 62px;
+      transform: rotate(-3deg);
+      box-shadow: 0 1px 0 rgba(0,0,0,.04), 0 18px 40px -18px rgba(15,23,42,.35);
+      font-size: 15px; line-height: 28px; color: #1E293B;
+    }
+    .pad-file { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 13px; color: var(--indigo-dk); margin-bottom: 8px; line-height: 22px; }
+    .pad-file svg { width: 16px; height: 16px; }
+    .pad h3 { font: 700 18px/28px var(--body); letter-spacing: 0; }
+    .pad mark { background: rgba(245,158,11,.35); color: inherit; padding: 0 2px; border-radius: 2px; }
+
+    .quiz {
+      position: relative; width: 82%; margin: -64px 0 0 auto;
+      background: var(--surface); border-radius: 22px; padding: 22px;
+      box-shadow: 0 30px 60px -24px rgba(55,48,163,.45), 0 0 0 1px rgba(15,23,42,.06);
+      transform: rotate(1.5deg);
+    }
+    .quiz-top { display: flex; align-items: center; justify-content: space-between; font-size: 13px; color: var(--muted); font-weight: 600; }
+    .quiz-bar { height: 6px; background: var(--indigo-lt); border-radius: 99px; margin: 10px 0 16px; overflow: hidden; }
+    .quiz-bar i { display: block; height: 100%; width: 20%; background: var(--indigo); border-radius: 99px; }
+    .quiz-q { font-weight: 700; font-size: 17px; line-height: 1.4; margin-bottom: 14px; }
+    .choices { display: grid; gap: 8px; }
+    .choice {
+      display: flex; align-items: center; gap: 12px; width: 100%;
+      text-align: left; font: 500 15px/1.3 var(--body); color: var(--ink);
+      background: #fff; border: 2px solid var(--line); border-radius: 12px; padding: 10px 12px; cursor: pointer;
+      transition: border-color .15s, background-color .15s;
+    }
+    .choice:hover:not(:disabled) { border-color: var(--indigo); background: var(--indigo-lt); }
+    .choice:disabled { cursor: default; }
+    .choice .letter {
+      flex: none; width: 28px; height: 28px; border-radius: 8px; display: grid; place-items: center;
+      background: var(--indigo-lt); color: var(--indigo-dk); font-weight: 700; font-size: 14px;
+    }
+    .choice.correct { border-color: var(--green); background: var(--green-lt); }
+    .choice.correct .letter { background: var(--green); color: #fff; }
+    .choice.wrong { border-color: var(--red); background: var(--red-lt); }
+    .choice.wrong .letter { background: var(--red); color: #fff; }
+    .why { display: none; margin-top: 12px; background: var(--indigo-lt); border-radius: 12px; padding: 12px 14px; font-size: 14px; line-height: 1.5; }
+    .why.show { display: block; animation: rise .3s ease-out; }
+    .why strong { display: block; margin-bottom: 2px; }
+    .why button { margin-top: 8px; background: none; border: 0; padding: 0; font: 600 14px var(--body); color: var(--indigo); cursor: pointer; text-decoration: underline; }
+    .try-hint { margin-top: 10px; font-size: 13px; color: var(--muted); text-align: center; }
+    @keyframes rise { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+    @media (max-width: 900px) {
+      .hero { padding-top: 32px; }
+      .hero-grid { grid-template-columns: 1fr; gap: 40px; }
+      .pad, .quiz { width: auto; }
+      .pad { margin-right: 18px; }
+      .quiz { margin: -56px 0 0 22px; }
+    }
+    @media (max-width: 420px) {
+      .pad { padding-left: 54px; font-size: 14px; background-image:
+        linear-gradient(to right, transparent 40px, var(--pad-margin) 40px, var(--pad-margin) 42px, transparent 42px),
+        repeating-linear-gradient(to bottom, transparent 0 27px, var(--pad-rule) 27px 28px); }
+      .quiz { margin-left: 8px; padding: 18px; }
+    }
+
+    /* ---------- How it works ---------- */
+    .steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; counter-reset: s; }
+    .steps li { counter-increment: s; border-top: 3px solid var(--ink); padding-top: 20px; }
+    .steps li::before { content: counter(s); display: block; font: 800 64px/1 var(--display); color: var(--indigo); margin-bottom: 14px; }
+    .steps h3 { font-size: 22px; font-weight: 800; margin-bottom: 8px; }
+    .steps p { color: #475569; }
+    .steps .eg { display: inline-block; margin-top: 10px; font-size: 14px; color: var(--muted); }
+    @media (max-width: 760px) { .steps { grid-template-columns: 1fr; gap: 28px; } }
+
+    /* ---------- Question types ---------- */
+    .types-band { background: var(--surface); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .types { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border: 1px solid var(--line); border-radius: 20px; overflow: hidden; }
+    .type { padding: 24px; border-right: 1px solid var(--line); background: var(--bg); }
+    .type:last-child { border-right: 0; }
+    .type h3 { font-size: 20px; font-weight: 800; }
+    .type p { color: var(--muted); font-size: 15px; margin: 4px 0 18px; }
+    .spec { background: #fff; border-radius: 12px; padding: 12px; font-size: 13px; border: 1px solid var(--line); }
+    .spec-row { display: flex; gap: 8px; align-items: center; padding: 4px 0; }
+    .spec-row b { width: 20px; height: 20px; border-radius: 6px; background: var(--indigo-lt); color: var(--indigo-dk); display: grid; place-items: center; font-size: 11px; flex: none; }
+    .spec-row.ok b { background: var(--green); color: #fff; }
+    .spec-input { border-bottom: 2px solid var(--indigo); padding: 4px 2px; font-weight: 600; }
+    .spec-input::after { content: ""; display: inline-block; width: 2px; height: 14px; background: var(--indigo); margin-left: 2px; vertical-align: -2px; animation: blink 1s steps(1) infinite; }
+    @keyframes blink { 50% { opacity: 0; } }
+    .spec-tf { display: flex; gap: 8px; }
+    .spec-tf span { flex: 1; text-align: center; padding: 8px; border-radius: 10px; border: 2px solid var(--line); font-weight: 600; }
+    .spec-tf span.ok { border-color: var(--green); background: var(--green-lt); }
+    .spec-scene { font-style: italic; color: #475569; margin-bottom: 6px; }
+    .types-note { margin-top: 18px; color: var(--muted); font-size: 15px; }
+    @media (max-width: 900px) {
+      .types { grid-template-columns: 1fr 1fr; }
+      .type:nth-child(2) { border-right: 0; }
+      .type:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
+    }
+    @media (max-width: 540px) {
+      .types { grid-template-columns: 1fr; }
+      .type { border-right: 0; border-bottom: 1px solid var(--line); }
+      .type:last-child { border-bottom: 0; }
+    }
+
+    /* ---------- Features ---------- */
+    .features { display: grid; grid-template-columns: 1fr 1fr; gap: 40px 56px; }
+    .feat { display: grid; grid-template-columns: 48px 1fr; gap: 16px; }
+    .feat-ic { width: 48px; height: 48px; border-radius: 14px; background: var(--indigo-lt); display: grid; place-items: center; font-size: 24px; }
+    .feat h3 { font: 700 19px/1.3 var(--body); letter-spacing: 0; margin-bottom: 4px; }
+    .feat p { color: #475569; font-size: 16px; }
+    @media (max-width: 760px) { .features { grid-template-columns: 1fr; gap: 28px; } }
+
+    .forgive { margin-top: 64px; display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 40px; align-items: center; background: var(--surface); border-radius: 24px; padding: 36px; border: 1px solid var(--line); }
+    .forgive h3 { font-size: 28px; font-weight: 800; margin-bottom: 10px; }
+    .forgive p { color: #475569; }
+    .table-scroll { overflow-x: auto; }
+    .checks { width: 100%; border-collapse: collapse; font-size: 15px; min-width: 380px; }
+    .checks th { text-align: left; font-weight: 600; color: var(--muted); font-size: 13px; padding: 0 12px 10px; }
+    .checks td { padding: 11px 12px; border-top: 1px solid var(--line); }
+    .checks td:first-child { font-weight: 600; }
+    .tag { display: inline-flex; align-items: center; gap: 4px; font-weight: 700; font-size: 13px; padding: 3px 10px; border-radius: 99px; }
+    .tag.ok { background: var(--green-lt); color: #15803D; }
+    .tag.no { background: var(--red-lt); color: #B91C1C; }
+    @media (max-width: 860px) { .forgive { grid-template-columns: 1fr; padding: 26px 20px; } }
+
+    /* ---------- Privacy ---------- */
+    .privacy { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
+    .privacy h2 { font-size: clamp(30px, 4.4vw, 44px); font-weight: 800; }
+    .privacy-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 18px; }
+    .privacy-list li { padding-left: 34px; position: relative; color: #334155; }
+    .privacy-list li::before { content: ""; position: absolute; left: 0; top: 4px; width: 20px; height: 20px; border-radius: 6px; background: var(--indigo); 
+      -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z'/%3E%3C/svg%3E") center/16px no-repeat, linear-gradient(#000,#000);
+      -webkit-mask-composite: xor; mask-composite: exclude; }
+    .privacy-list li strong { color: var(--ink); }
+    .privacy-list li.warn::before { background: var(--amber);
+      -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M11 5h2v9h-2zM11 16.5h2v2.5h-2z'/%3E%3C/svg%3E") center/16px no-repeat, linear-gradient(#000,#000);
+      -webkit-mask-composite: xor; mask-composite: exclude; }
+    @media (max-width: 820px) { .privacy { grid-template-columns: 1fr; gap: 28px; } }
+
+    /* ---------- Download ---------- */
+    .download { background: var(--indigo-dk); color: #fff; border-radius: 32px; padding: 56px; display: grid; grid-template-columns: 1fr 1fr; gap: 56px; }
+    .download h2 { font-size: clamp(32px, 4.6vw, 48px); font-weight: 800; }
+    .download .lead { color: #C7D2FE; margin: 14px 0 30px; font-size: 18px; }
+    .req { margin-top: 30px; display: grid; grid-template-columns: auto 1fr; gap: 6px 16px; font-size: 15px; color: #E0E7FF; }
+    .req dt { color: #A5B4FC; }
+    .req dd { margin: 0; }
+    .install { list-style: none; margin: 0; padding: 0; counter-reset: i; display: grid; gap: 18px; }
+    .install li { counter-increment: i; display: grid; grid-template-columns: 36px 1fr; gap: 14px; align-items: start; }
+    .install li::before { content: counter(i); width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,.12); display: grid; place-items: center; font-weight: 700; }
+    .install strong { display: block; }
+    .install span { color: #C7D2FE; font-size: 15px; }
+    .tip { margin-top: 22px; background: rgba(245,158,11,.16); border-left: 4px solid var(--amber); border-radius: 0 12px 12px 0; padding: 14px 16px; font-size: 15px; color: #FEF3C7; }
+    @media (max-width: 880px) { .download { grid-template-columns: 1fr; padding: 36px 22px; gap: 40px; border-radius: 24px; } }
+
+    /* ---------- What's new ---------- */
+    .news { display: grid; grid-template-columns: 280px 1fr; gap: 48px; }
+    .news-side p { color: var(--muted); margin-top: 12px; }
+    .news-side h2 { font-size: clamp(30px, 4.4vw, 44px); font-weight: 800; }
+    .changes { columns: 2; column-gap: 40px; margin: 0; padding: 0; list-style: none; }
+    .changes li { break-inside: avoid; padding: 0 0 14px 22px; position: relative; color: #334155; }
+    .changes li::before { content: ""; position: absolute; left: 0; top: 10px; width: 8px; height: 8px; border-radius: 50%; background: var(--indigo); }
+    .older { margin-top: 26px; color: var(--muted); font-size: 15px; }
+    .older summary { cursor: pointer; font-weight: 600; color: var(--indigo); }
+    .older p { margin-top: 10px; }
+    @media (max-width: 820px) { .news { grid-template-columns: 1fr; gap: 24px; } .changes { columns: 1; } }
+
+    /* ---------- FAQ ---------- */
+    .faq { max-width: 780px; }
+    .faq details { border-bottom: 1px solid var(--line); }
+    .faq summary { list-style: none; cursor: pointer; padding: 20px 40px 20px 0; font-weight: 700; font-size: 18px; position: relative; }
+    .faq summary::-webkit-details-marker { display: none; }
+    .faq summary::after { content: "+"; position: absolute; right: 4px; top: 50%; transform: translateY(-50%); font: 600 26px/1 var(--body); color: var(--indigo); transition: transform .2s; }
+    .faq details[open] summary::after { transform: translateY(-50%) rotate(45deg); }
+    .faq details p { padding: 0 0 20px; color: #475569; max-width: 68ch; }
+
+    /* ---------- Dev note ---------- */
+    .note {
+      max-width: 720px; margin: 0 auto;
+      background-color: var(--pad);
+      background-image:
+        linear-gradient(to right, transparent 46px, var(--pad-margin) 46px, var(--pad-margin) 48px, transparent 48px),
+        repeating-linear-gradient(to bottom, transparent 0 29px, var(--pad-rule) 29px 30px);
+      padding: 30px 30px 34px 72px; border-radius: 4px; line-height: 30px;
+      transform: rotate(-0.6deg);
+      box-shadow: 0 18px 40px -20px rgba(15,23,42,.35);
+    }
+    .note h2 { font: 800 26px/30px var(--display); margin-bottom: 30px; }
+    .note p { color: #1E293B; }
+    .note-sign { margin-top: 30px; font-weight: 700; }
+    .note-links { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+    .note-links a { display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border-radius: 10px; text-decoration: none; font-weight: 700; font-size: 15px; line-height: 1.2; color: #fff; }
+    .note-links svg { width: 18px; height: 18px; fill: currentColor; }
+    .fb { background: #1877F2; }
+    .fb:hover { background: #0F65D8; }
+    .gm { background: var(--ink); }
+    .gm:hover { background: #334155; }
+    @media (max-width: 480px) {
+      .note { padding: 24px 18px 28px 54px; transform: none; background-image:
+        linear-gradient(to right, transparent 38px, var(--pad-margin) 38px, var(--pad-margin) 40px, transparent 40px),
+        repeating-linear-gradient(to bottom, transparent 0 29px, var(--pad-rule) 29px 30px); }
+    }
+
+    /* ---------- Footer ---------- */
+    footer { border-top: 1px solid var(--line); padding: 36px 0 44px; margin-top: 40px; }
+    .foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 20px; align-items: center; font-size: 15px; color: var(--muted); }
+    .foot strong { color: var(--ink); }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+    }
+  </style>
 </head>
-<body class="bg-cyber-grid antialiased selection:bg-appPrimary selection:text-white">
+<body>
 
-    <div class="fixed top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] glow-orb-purple pointer-events-none -z-10 animate-pulse"></div>
-    <div class="fixed bottom-10 right-0 w-[600px] h-[600px] glow-orb-cyan pointer-events-none -z-10"></div>
-
-    <div class="bg-gradient-to-r from-appPrimary via-purple-600 to-indigo-600 text-white font-semibold text-xs py-2.5 px-4 text-center tracking-wide shadow-lg">
-        ⚡ <span class="font-bold">Aral AI Version 2.1 Patch Live:</span> Strict AI Question Logic, Dynamic 5–50 Question Customization, & Mobile Layout Enhancements.
+  <!-- ================= NAV ================= -->
+  <header class="nav" id="nav">
+    <div class="wrap nav-inner">
+      <a class="logo" href="#top" aria-label="AralAI home">
+        <span class="logo-mark"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82zM12 3 1 9l11 6 9-4.91V17h2V9L12 3z"/></svg></span>
+        <span class="logo-word">Aral<span>AI</span></span>
+      </a>
+      <nav class="nav-links" aria-label="Main">
+        <a href="#how">How it works</a>
+        <a href="#features">Features</a>
+        <a href="#faq">FAQ</a>
+        <a class="nav-cta" href="#download">Download</a>
+      </nav>
     </div>
+  </header>
 
-    <nav class="max-w-7xl mx-auto px-4 sm:px-6 py-6 flex justify-between items-center">
-        <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl bg-appPrimary text-white font-black text-xl flex items-center justify-center shadow-lg shadow-appPrimary/40">
-                🎓
-            </div>
-            <div class="flex items-center gap-2">
-                <span class="text-2xl font-extrabold tracking-tight">Aral <span class="text-appPrimary">AI</span></span>
-                <span class="px-2.5 py-0.5 text-[10px] font-mono font-bold badge-v2 text-white rounded-md uppercase tracking-wider">v2.1 Patch</span>
-            </div>
-        </div>
-        <div class="flex items-center gap-4">
-            <a href="#changelog" class="hidden sm:inline-block text-xs font-semibold text-slate-300 hover:text-white transition">Changelog</a>
-            <a href="#features" class="hidden sm:inline-block text-xs font-semibold text-slate-300 hover:text-white transition">Features</a>
-            <a href="#download" class="px-5 py-2.5 bg-appPrimary/10 border border-appPrimary/40 text-appPrimary font-semibold text-xs sm:text-sm rounded-xl hover:bg-appPrimary hover:text-white transition-all duration-300 shadow-sm">
-                Get APK v2.1
+  <main id="top">
+
+    <!-- ================= HERO ================= -->
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div>
+          <a class="new-pill" href="#whats-new"><b>New</b> Version 3: flashcards, study streaks, and a fresh design</a>
+          <h1>Turn any handout into a quiz in seconds.</h1>
+          <p class="hero-sub">Type a topic or upload your PDF or Word handout. AralAI writes a full quiz or a set of flashcards from it, with an explanation for every answer.</p>
+          <p class="hero-sub-fil" lang="fil">Upload mo lang ang handout, AralAI na ang bahala sa reviewer mo.</p>
+
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#download">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.6 9.48 19.44 6.3a.38.38 0 0 0-.66-.38l-1.86 3.22a11.4 11.4 0 0 0-9.84 0L5.22 5.92a.38.38 0 0 0-.66.38L6.4 9.48A10.8 10.8 0 0 0 1 18h22a10.8 10.8 0 0 0-5.4-8.52zM7 15.25a1.25 1.25 0 1 1 0-2.5 1.25 1.25 0 0 1 0 2.5zm10 0a1.25 1.25 0 1 1 0-2.5 1.25 1.25 0 0 1 0 2.5z"/></svg>
+              Download for Android
             </a>
-        </div>
-    </nav>
-
-    <section class="max-w-5xl mx-auto px-4 sm:px-6 pt-8 sm:pt-14 pb-16 text-center relative">
-        
-        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-appPrimary/10 border border-appPrimary/30 text-appPrimary font-mono font-semibold text-xs mb-6">
-            <span class="w-2 h-2 rounded-full bg-appPrimary animate-ping"></span>
-            Version 2.1 Stability & Customization Update
+            <ul class="hero-facts">
+              <li><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg>Free</li>
+              <li><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg>No account</li>
+              <li><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg>Filipino or English</li>
+            </ul>
+          </div>
         </div>
 
-        <h1 class="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight leading-tight mb-6">
-            AI Study Assistant <br class="hidden sm:inline"/>
-            <span class="bg-gradient-to-r from-appPrimary via-indigo-300 to-cyan-300 bg-clip-text text-transparent">Built for High-Precision Learning</span>
-        </h1>
-
-        <p class="text-base sm:text-lg text-slate-300 max-w-3xl mx-auto font-normal mb-10 leading-relaxed">
-            Aral AI empowers students to convert documents into tailored interactive quizzes and flashcards. Version 2.1 introduces enhanced question-type compliance, customized item counts (5–50 questions), step-by-step loading progress, and an optimized APK layout.
-        </p>
-
-        <div id="download" class="max-w-md mx-auto p-6 sm:p-8 glass-card border border-appPrimary/30 shadow-2xl relative">
-            <div class="flex items-center justify-between mb-2">
-                <h2 class="text-lg sm:text-xl font-bold text-white">Download Aral AI v2.1</h2>
-                <span class="text-[10px] font-mono px-2 py-0.5 bg-emerald-500/20 text-emerald-400 font-bold rounded-md">APK RELEASE</span>
+        <!-- Handout -> quiz demo -->
+        <div class="stage" aria-label="Example: a handout turned into a quiz question">
+          <div class="pad" aria-hidden="true">
+            <div class="pad-file">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/></svg>
+              AP7_Himagsikan.pdf
             </div>
-            <p class="text-xs text-slate-400 mb-6 font-mono">DIRECT APK DOWNLOAD VIA GOOGLE DRIVE</p>
+            <h3 lang="fil">Ang Himagsikan ng 1896</h3>
+            <p lang="fil">Noong Agosto 1896, sa Sigaw ng Pugad Lawin, pinunit ng mga Katipunero ang kanilang sedula bilang hudyat ng himagsikan laban sa Espanya. Pinamunuan ito ni <mark>Andres Bonifacio</mark>, ang Supremo ng Katipunan.</p>
+          </div>
 
-            <a href="https://drive.google.com/file/d/12kXEsdM364jlxFClUBigcIXk6lU7vdOl/view" target="_blank" rel="noopener noreferrer" 
-               class="flex items-center justify-center gap-3 w-full py-4 bg-appPrimary hover:bg-indigo-600 text-white font-bold text-base rounded-xl transition-all shadow-lg shadow-appPrimary/35 transform hover:-translate-y-0.5 active:translate-y-0">
-                <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
-                    <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
-                </svg>
-                Download Aral AI v2.1 APK
+          <div class="quiz">
+            <div class="quiz-top"><span>Tanong 3 ng 15</span><span>Multiple choice</span></div>
+            <div class="quiz-bar"><i></i></div>
+            <p class="quiz-q" lang="fil" id="demo-q">Sino ang namuno sa Katipunan nang magsimula ang himagsikan noong 1896?</p>
+            <div class="choices" role="group" aria-labelledby="demo-q">
+              <button class="choice" data-correct="false"><span class="letter">A</span>Emilio Aguinaldo</button>
+              <button class="choice" data-correct="true"><span class="letter">B</span>Andres Bonifacio</button>
+              <button class="choice" data-correct="false"><span class="letter">C</span>Jose Rizal</button>
+              <button class="choice" data-correct="false"><span class="letter">D</span>Apolinario Mabini</button>
+            </div>
+            <div class="why" id="why" aria-live="polite" lang="fil">
+              <strong id="why-verdict">💡 Bakit?</strong>
+              Si Andres Bonifacio ang Supremo ng Katipunan at namuno sa Sigaw ng Pugad Lawin. Si Aguinaldo ay naging pinuno pagkatapos ng Tejeros noong 1897, at si Rizal ay hindi kasapi ng Katipunan.
+              <br><button type="button" id="demo-reset">Subukan ulit</button>
+            </div>
+            <p class="try-hint" id="try-hint">Try it: tap an answer.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= HOW IT WORKS ================= -->
+    <section class="section" id="how" style="padding-top: 24px;">
+      <div class="wrap">
+        <div class="section-head">
+          <h2>From handout to reviewer in under a minute</h2>
+        </div>
+        <ol class="steps">
+          <li>
+            <h3>Add your material</h3>
+            <p>Type a topic, or upload a PDF or Word (.docx) file up to 10 MB: handouts, modules, notes.</p>
+            <span class="eg" lang="fil">Hal. "Photosynthesis" o "Rebolusyong 1896"</span>
+          </li>
+          <li>
+            <h3>Choose your quiz style</h3>
+            <p>Pick 5 to 50 questions, the question types, difficulty, order, timer, and language.</p>
+          </li>
+          <li>
+            <h3>Study</h3>
+            <p>Answer one question at a time, see why each answer is right, then review only what you got wrong.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ================= QUESTION TYPES ================= -->
+    <section class="section types-band">
+      <div class="wrap">
+        <div class="section-head">
+          <h2>Four ways to be tested</h2>
+          <p>Use one type, combine a few, or choose Mixed for a balance of all four. The quiz always follows what you picked.</p>
+        </div>
+        <div class="types">
+          <div class="type">
+            <h3>Multiple choice</h3>
+            <p>Pick from four choices.</p>
+            <div class="spec" aria-hidden="true">
+              <div class="spec-row"><b>A</b>Mitochondria</div>
+              <div class="spec-row ok"><b>B</b>Chloroplast</div>
+              <div class="spec-row"><b>C</b>Ribosome</div>
+              <div class="spec-row"><b>D</b>Nucleus</div>
+            </div>
+          </div>
+          <div class="type">
+            <h3>Situational</h3>
+            <p>Read a real-life scenario, then choose the best answer.</p>
+            <div class="spec" aria-hidden="true">
+              <p class="spec-scene">Your plant on a dark shelf turns pale. Why?</p>
+              <div class="spec-row ok"><b>B</b>It lacks light for photosynthesis</div>
+            </div>
+          </div>
+          <div class="type">
+            <h3>Identification</h3>
+            <p>Type the answer yourself.</p>
+            <div class="spec" aria-hidden="true">
+              <p style="margin-bottom:8px">The green pigment in leaves:</p>
+              <div class="spec-input">chlorophyll</div>
+            </div>
+          </div>
+          <div class="type">
+            <h3>True or false</h3>
+            <p>Tap one. Quick and simple.</p>
+            <div class="spec" aria-hidden="true">
+              <p style="margin-bottom:8px">Plants release oxygen.</p>
+              <div class="spec-tf"><span class="ok">True</span><span>False</span></div>
+            </div>
+          </div>
+        </div>
+        <p class="types-note">Difficulty goes from Easy (key terms, with believable choices from the same lesson) to Hard (analysis, with close choices). Answers are shuffled evenly, so the right one isn't always A.</p>
+      </div>
+    </section>
+
+    <!-- ================= FEATURES ================= -->
+    <section class="section" id="features">
+      <div class="wrap">
+        <div class="section-head">
+          <h2>Built for how students actually review</h2>
+        </div>
+        <div class="features">
+          <div class="feat">
+            <div class="feat-ic" aria-hidden="true">📄</div>
+            <div><h3>Questions from your own handout</h3><p>When you upload a file, the AI is told to use only that document, so the quiz matches what your teacher actually taught.</p></div>
+          </div>
+          <div class="feat">
+            <div class="feat-ic" aria-hidden="true">💡</div>
+            <div><h3>An explanation for every answer</h3><p>See why the correct answer is right and why the other choices are wrong, right after you answer.</p></div>
+          </div>
+          <div class="feat">
+            <div class="feat-ic" aria-hidden="true">🃏</div>
+            <div><h3>Quiz mode or flashcards</h3><p>Take a scored quiz, or flip through cards and mark each one "Knew it" or "Still learning".</p></div>
+          </div>
+          <div class="feat">
+            <div class="feat-ic" aria-hidden="true">🔁</div>
+            <div><h3>Review your mistakes</h3><p>After a quiz, retake only the questions you got wrong, or the whole quiz again.</p></div>
+          </div>
+          <div class="feat">
+            <div class="feat-ic" aria-hidden="true">🔖</div>
+            <div><h3>Save the hard ones</h3><p>Bookmark tricky questions from any deck and study them together as a quiz or as flashcards.</p></div>
+          </div>
+          <div class="feat">
+            <div class="feat-ic" aria-hidden="true">🔥</div>
+            <div><h3>Daily study streak</h3><p>Finish one quiz a day to keep your streak going. Track quizzes completed and your overall accuracy.</p></div>
+          </div>
+          <div class="feat">
+            <div class="feat-ic" aria-hidden="true">🗂️</div>
+            <div><h3>All your decks, saved</h3><p>Every quiz is saved automatically with its best and last score. Search them anytime, even offline.</p></div>
+          </div>
+          <div class="feat">
+            <div class="feat-ic" aria-hidden="true">⏱️</div>
+            <div><h3>Timed or untimed</h3><p>Practice under pressure with 30 seconds per question, or take your time. Random or in-order questions.</p></div>
+          </div>
+        </div>
+
+        <div class="forgive">
+          <div>
+            <h3>Checks your answers like a fair teacher</h3>
+            <p>For identification, AralAI ignores capital letters, accents, and punctuation, accepts extra words, and forgives small typos. A truly different answer is still wrong.</p>
+          </div>
+          <div class="table-scroll">
+            <table class="checks">
+              <thead><tr><th>You typed</th><th>Answer key</th><th>Result</th></tr></thead>
+              <tbody>
+                <tr><td>jose rizal</td><td>José Rizal.</td><td><span class="tag ok">✓ Correct</span></td></tr>
+                <tr><td>Dr. Jose P. Rizal</td><td>Jose Rizal</td><td><span class="tag ok">✓ Correct</span></td></tr>
+                <tr><td>Jose Rizl</td><td>Jose Rizal</td><td><span class="tag ok">✓ Correct</span></td></tr>
+                <tr><td>mitosis</td><td>meiosis</td><td><span class="tag no">✕ Wrong</span></td></tr>
+                <tr><td>1898</td><td>1896</td><td><span class="tag no">✕ Wrong</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= PRIVACY ================= -->
+    <section class="section" style="padding-top: 24px;">
+      <div class="wrap privacy">
+        <div>
+          <h2>No account. Your study data stays on your phone.</h2>
+        </div>
+        <ul class="privacy-list">
+          <li><strong>No sign-up or login.</strong> Open the app and start studying.</li>
+          <li><strong>Decks, bookmarks, scores, and your streak are saved only on your phone.</strong> They are not uploaded to any AralAI server.</li>
+          <li><strong>Only your topic or document is sent to the AI</strong> (Google Gemini) so it can write your questions.</li>
+          <li><strong>No ads.</strong></li>
+          <li class="warn"><strong>No cloud backup yet.</strong> Uninstalling the app or clearing its data deletes your decks and progress.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ================= DOWNLOAD ================= -->
+    <section class="section" id="download" style="padding-top: 24px;">
+      <div class="wrap">
+        <div class="download">
+          <div>
+            <h2>Get AralAI for Android</h2>
+            <p class="lead">Free download. The app installs directly from an APK file, not from the Play Store yet.</p>
+            <!-- Google Drive link to the APK -->
+            <a class="btn btn-light" href="https://drive.google.com/file/d/1Cw08ZiICP79yyMge4U_MhtMrfLcv6Z62/view?usp=drive_link" target="_blank" rel="noopener noreferrer">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 20h14"/></svg>
+              Download the APK
             </a>
-            
-            <div class="flex justify-center items-center gap-4 mt-4 text-[11px] text-slate-400 font-medium">
-                <span>✓ Android Compatible</span>
-                <span>•</span>
-                <span>✓ No Account Required</span>
-            </div>
+            <dl class="req">
+              <dt>Works on</dt><dd>Android phones</dd>
+              <dt>Space</dt><dd>About 120 MB</dd>
+              <dt>Internet</dt><dd>Needed only to make a new quiz</dd>
+              <dt>iPhone</dt><dd>Not available yet</dd>
+            </dl>
+          </div>
+          <div>
+            <ol class="install">
+              <li><div><strong>Open the download link</strong><span>It opens the APK file in Google Drive. Tap the download icon.</span></div></li>
+              <li><div><strong>Open the downloaded file</strong><span>Tap the notification, or find it in Files → Downloads.</span></div></li>
+              <li><div><strong>Allow the install</strong><span>If Android asks, turn on "Install unknown apps" for your browser or Files app.</span></div></li>
+              <li><div><strong>Tap Install, then open AralAI</strong><span>No account needed. Start your first quiz right away.</span></div></li>
+            </ol>
+            <p class="tip" lang="fil">Kung sabihin ng Google Drive na hindi nito ma-scan ang file para sa virus, normal iyon sa malalaking file. Piliin ang <strong>Download anyway</strong>.</p>
+          </div>
         </div>
+      </div>
     </section>
 
-    <section id="changelog" class="max-w-6xl mx-auto px-4 sm:px-6 py-12">
-        <div class="text-center mb-12">
-            <span class="text-xs font-mono font-bold text-appPrimary uppercase tracking-widest">Version 2.1 Patch Notes</span>
-            <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-white mt-1">What's New & Improved</h2>
-            <p class="text-sm text-slate-400 mt-2">A focus on stability, precise generation, and better mobile UX.</p>
+    <!-- ================= WHAT'S NEW ================= -->
+    <section class="section" id="whats-new" style="padding-top: 24px;">
+      <div class="wrap news">
+        <div class="news-side">
+          <h2>What's new in Version 3</h2>
+          <p>A full redesign plus smarter, faster quizzes.</p>
         </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            
-            <div class="glass-card p-6 relative overflow-hidden">
-                <div class="w-10 h-10 rounded-xl bg-indigo-500/15 text-indigo-400 flex items-center justify-center font-bold text-lg mb-4">
-                    ⏳
-                </div>
-                <h3 class="text-lg font-bold text-white mb-2">Step-by-Step Progress Tracking</h3>
-                <p class="text-xs text-slate-300 leading-relaxed mb-4">
-                    Clear real-time status updates keep users informed throughout the generation pipeline:
-                </p>
-                <div class="p-3 bg-slate-900/90 rounded-lg border border-slate-800 font-mono text-[11px] text-indigo-300 space-y-1">
-                    <p>▸ "Reading document..."</p>
-                    <p>▸ "Generating questions..."</p>
-                    <p>▸ "Preparing flashcards..."</p>
-                </div>
-            </div>
-
-            <div class="glass-card p-6 relative overflow-hidden">
-                <div class="w-10 h-10 rounded-xl bg-purple-500/15 text-purple-400 flex items-center justify-center font-bold text-lg mb-4">
-                    🎛️
-                </div>
-                <h3 class="text-lg font-bold text-white mb-2">Custom Question Counts</h3>
-                <p class="text-xs text-slate-300 leading-relaxed mb-3">
-                    Input custom quantities tailored to your exact study goals alongside traditional increment controls.
-                </p>
-                <ul class="text-xs text-slate-400 space-y-1 font-mono">
-                    <li>• Supported Range: <strong>5 to 50 questions</strong></li>
-                    <li>• Manual numerical entry enabled</li>
-                    <li>• Native +/- button controls retained</li>
-                </ul>
-            </div>
-
-            <div class="glass-card p-6 relative overflow-hidden">
-                <div class="w-10 h-10 rounded-xl bg-cyan-500/15 text-cyan-400 flex items-center justify-center font-bold text-lg mb-4">
-                    🧠
-                </div>
-                <h3 class="text-lg font-bold text-white mb-2">Strict Question Type Compliance</h3>
-                <p class="text-xs text-slate-300 leading-relaxed">
-                    AI generation now strictly adheres to selected parameters without adding unwanted question formats.
-                </p>
-                <div class="mt-3 text-xs text-slate-400 space-y-1">
-                    <p>• <strong>Situational:</strong> Enforces Multiple Choice layout with 4 distinct options.</p>
-                    <p>• <strong>True/False:</strong> Auto-validates and formats options before saving.</p>
-                </div>
-            </div>
-
+        <div>
+          <ul class="changes">
+            <li>New design for Home, Quiz, Library, and Results</li>
+            <li>Flashcard mode with a flip animation</li>
+            <li>Saved Questions screen for all your bookmarks</li>
+            <li>Daily study streak and progress on the home screen</li>
+            <li>Best score, last score, and search in My Decks</li>
+            <li>Choose quiz or flashcards, order, and timer when opening a deck</li>
+            <li>Green and red answer highlights, progress bar, and vibration</li>
+            <li>Forgiving answer checking for identification</li>
+            <li>Smarter questions: evenly shuffled answers and believable choices even on Easy</li>
+            <li>Faster generation, about 10 to 20 seconds for 15 questions</li>
+            <li>Clear error messages with a Try again button</li>
+            <li>The app remembers your language</li>
+          </ul>
+          <details class="older">
+            <summary>Earlier versions</summary>
+            <p><strong>Version 2</strong> added question count and types, difficulty, timer, random or in-order questions, Filipino or English quizzes, bookmarks, and review mistakes.</p>
+            <p><strong>Version 1</strong> brought quizzes from a topic, PDF, or Word file, with explanations, scores, and a deck library.</p>
+          </details>
         </div>
-
-        <div class="mt-6 glass-card p-6 border-slate-800">
-            <h4 class="text-base font-bold text-white mb-3 flex items-center gap-2">
-                <span>📱</span> Mobile & Layout Adjustments (APK Specifics)
-            </h4>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs text-slate-300">
-                <div class="p-4 bg-slate-900/60 rounded-xl border border-slate-800">
-                    <strong class="text-white block mb-1">Improved Home Screen Layout</strong>
-                    Added bottom padding to ensure quick-access topics and interactive menus remain fully accessible on mobile screens.
-                </div>
-                <div class="p-4 bg-slate-900/60 rounded-xl border border-slate-800">
-                    <strong class="text-white block mb-1">APK Viewport Fix</strong>
-                    Resolved lower-screen rendering cut-offs, ensuring seamless scrolling and button responsiveness across varied device aspect ratios.
-                </div>
-            </div>
-        </div>
+      </div>
     </section>
 
-    <section id="features" class="max-w-6xl mx-auto px-4 sm:px-6 py-12">
-        <div class="text-center mb-12">
-            <span class="text-xs font-mono font-bold text-appPrimary uppercase tracking-widest">Core Capabilities</span>
-            <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-white mt-1">Full System Overview</h2>
+    <!-- ================= FAQ ================= -->
+    <section class="section types-band" id="faq">
+      <div class="wrap">
+        <div class="section-head"><h2>Questions</h2></div>
+        <div class="faq">
+          <details><summary>Is AralAI free?</summary><p>Yes, completely free, with no ads.</p></details>
+          <details><summary>Do I need an account?</summary><p>No. Install it and start studying.</p></details>
+          <details><summary>What files can I upload?</summary><p>PDF and Word (.docx) files up to 10 MB. Files with real text (not just scanned photos) give the best results.</p></details>
+          <details><summary>Will the questions really come from my handout?</summary><p>Yes. When you upload a document, the AI is told to create questions only from that document.</p></details>
+          <details><summary>How long does it take to make a quiz?</summary><p>Usually 10 to 20 seconds for about 15 questions. Bigger quizzes, up to 50 questions, take a bit longer.</p></details>
+          <details><summary>Can I use it offline?</summary><p>You need internet to make a new quiz. Your saved decks, flashcards, bookmarks, and progress work without internet.</p></details>
+          <details><summary>Is the AI always correct?</summary><p>AralAI runs quality checks and asks the AI to double-check every answer, but AI can still make mistakes. If something looks off, compare it with your handout or ask your teacher.</p></details>
+          <details><summary>Is there an iPhone version?</summary><p>Not yet. AralAI is available for Android only for now.</p></details>
+          <details><summary>Where is my data saved?</summary><p>On your phone only. Uninstalling the app removes it.</p></details>
         </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            
-            <div class="glass-card p-6">
-                <div class="text-2xl mb-3">📄</div>
-                <h3 class="text-lg font-bold text-white mb-2">Document to Quiz</h3>
-                <p class="text-xs text-slate-300 leading-relaxed">
-                    Process raw text topics or uploaded PDF and Word reviewer files into structured study sets.
-                </p>
-            </div>
-
-            <div class="glass-card p-6">
-                <div class="text-2xl mb-3">⚙️</div>
-                <h3 class="text-lg font-bold text-white mb-2">Granular Control</h3>
-                <p class="text-xs text-slate-300 leading-relaxed">
-                    Configure question counts, target specific difficulties (Easy, Medium, Hard), set custom timers, and select languages (English or Filipino).
-                </p>
-            </div>
-
-            <div class="glass-card p-6">
-                <div class="text-2xl mb-3">📊</div>
-                <h3 class="text-lg font-bold text-white mb-2">Progress Analytics</h3>
-                <p class="text-xs text-slate-300 leading-relaxed">
-                    Track scores, review incorrect answers, bookmark difficult items, and analyze accuracy directly within your offline local library.
-                </p>
-            </div>
-
-        </div>
+      </div>
     </section>
 
-    <section class="max-w-4xl mx-auto px-4 sm:px-6 py-8">
-        <div class="glass-card p-6 border-indigo-500/20 bg-indigo-500/5">
-            <div class="flex items-center gap-2 mb-2">
-                <span class="text-lg">🔒</span>
-                <h3 class="text-base font-bold text-white">Local Storage & Offline Data Privacy</h3>
-            </div>
-            <p class="text-xs text-slate-300 leading-relaxed">
-                Aral AI operates without user accounts or mandatory cloud syncing. Generated study sets, saved progress, and bookmarked questions remain securely stored on your local device.
-            </p>
+    <!-- ================= DEV NOTE / BUG REPORT ================= -->
+    <section class="section">
+      <div class="wrap">
+        <div class="note" lang="fil">
+          <h2>Isang paalala mula sa developer</h2>
+          <p>Bago pa lang ang AralAI, kaya posibleng may maencounter kang bugs o glitches. Kung may problema ka o may suggestion para mapaganda pa ang app, mag-message ka lang sa akin. Malaking tulong ang bawat report!</p>
+          <p class="note-sign">Rhon Baylon (propeta144)</p>
+          <div class="note-links">
+            <a class="fb" href="https://www.facebook.com/rhonbenedict.baylon" target="_blank" rel="noopener noreferrer">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M24 12.07C24 5.45 18.63.07 12 .07S0 5.45 0 12.07c0 5.99 4.39 10.95 10.13 11.85v-8.38H7.08v-3.47h3.05V9.43c0-3.01 1.79-4.67 4.53-4.67 1.31 0 2.69.24 2.69.24v2.95h-1.51c-1.49 0-1.96.93-1.96 1.87v2.25h3.33l-.53 3.47h-2.8v8.38C19.61 23.03 24 18.06 24 12.07z"/></svg>
+              Message on Facebook
+            </a>
+            <a class="gm" href="mailto:rhon.baylon0503@gmail.com?subject=AralAI%20bug%20report">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>
+              Email a bug report
+            </a>
+          </div>
         </div>
+      </div>
     </section>
+  </main>
 
-    <section class="max-w-4xl mx-auto px-4 sm:px-6 py-6 mb-12">
-        <div class="p-6 sm:p-8 glass-card border border-slate-700 relative text-center">
-            <h3 class="text-lg font-bold text-white mb-2">Feedback & Technical Support</h3>
-            <p class="text-xs sm:text-sm text-slate-300 max-w-xl mx-auto mb-6">
-                Encountered an issue or have feature recommendations for Version 2.1? Reach out directly to the developer:
-            </p>
+  <footer>
+    <div class="wrap foot">
+      <a class="logo" href="#top" aria-label="Back to top">
+        <span class="logo-mark"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82zM12 3 1 9l11 6 9-4.91V17h2V9L12 3z"/></svg></span>
+        <span class="logo-word">Aral<span>AI</span></span>
+      </a>
+      <div>
+        <p>Made by <strong>Rhon Baylon</strong>. Powered by Google Gemini.</p>
+        <p style="font-size:14px;margin-top:4px">© 2026 Rhon Benedict Baylon. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
 
-            <div class="flex flex-wrap justify-center gap-4">
-                <a href="https://www.facebook.com/rhonbenedict.baylon" target="_blank" rel="noopener noreferrer" 
-                   class="inline-flex items-center gap-2 px-5 py-2.5 bg-[#1877F2] hover:bg-blue-600 text-white font-medium text-xs rounded-xl transition-all shadow-md">
-                    Facebook Page
-                </a>
+  <script>
+    // Nav border on scroll
+    const nav = document.getElementById('nav');
+    const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 8);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
 
-                <a href="mailto:rhon.baylon0503@gmail.com" 
-                   class="inline-flex items-center gap-2 px-5 py-2.5 bg-[#EA4335] hover:bg-red-600 text-white font-medium text-xs rounded-xl transition-all shadow-md">
-                    Email Support
-                </a>
-            </div>
-        </div>
-    </section>
+    // Hero demo quiz
+    const choices = document.querySelectorAll('.choice');
+    const why = document.getElementById('why');
+    const verdict = document.getElementById('why-verdict');
+    const hint = document.getElementById('try-hint');
+    const reset = document.getElementById('demo-reset');
 
-    <footer class="max-w-7xl mx-auto px-4 sm:px-6 py-8 border-t border-slate-800/80">
-        <div class="flex flex-col md:flex-row justify-between items-center gap-4 text-center md:text-left">
-            <div>
-                <p class="text-base font-bold text-white">Aral AI Application v2.1</p>
-                <p class="text-xs text-slate-400 mt-0.5">AI-Powered Quiz & Flashcard Assistant.</p>
-            </div>
+    choices.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const right = btn.dataset.correct === 'true';
+        choices.forEach(c => {
+          c.disabled = true;
+          if (c.dataset.correct === 'true') c.classList.add('correct');
+        });
+        if (!right) btn.classList.add('wrong');
+        if (navigator.vibrate) navigator.vibrate(right ? 30 : [40, 60, 40]);
+        verdict.textContent = right ? '✓ Tama! 💡 Bakit?' : '✕ Mali. 💡 Bakit?';
+        why.classList.add('show');
+        hint.hidden = true;
+      });
+    });
 
-            <div class="px-4 py-2 bg-slate-900 border border-slate-800 rounded-xl">
-                <p class="text-[11px] text-slate-400">Developed by <span class="text-white font-semibold">Rhon Baylon</span> (<span class="text-appPrimary font-mono">propeta144</span>)</p>
-            </div>
-        </div>
-    </footer>
-
+    reset.addEventListener('click', () => {
+      choices.forEach(c => { c.disabled = false; c.classList.remove('correct', 'wrong'); });
+      why.classList.remove('show');
+      hint.hidden = false;
+      choices[0].focus();
+    });
+  </script>
 </body>
 </html>

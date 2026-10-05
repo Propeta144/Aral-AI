@@ -1,21 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aral AI — Under Maintenance</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>AralAI: Under maintenance</title>
+  <meta name="theme-color" content="#4F46E5">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,800&family=Figtree:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; min-height: 100vh; display: grid; place-items: center; padding: 24px;
+      background: #F5F7FB; color: #0F172A;
+      font: 17px/1.6 "Figtree", "Segoe UI", system-ui, sans-serif;
+    }
+    .card { max-width: 440px; background: #fff; border-radius: 24px; padding: 36px 30px; text-align: center; box-shadow: 0 30px 60px -28px rgba(55,48,163,.45), 0 0 0 1px rgba(15,23,42,.06); }
+    .mark { width: 56px; height: 56px; border-radius: 16px; background: #4F46E5; display: grid; place-items: center; margin: 0 auto 22px; }
+    .mark svg { width: 34px; height: 34px; fill: #fff; }
+    h1 { font: 800 28px/1.15 "Bricolage Grotesque", "Segoe UI", sans-serif; letter-spacing: -0.02em; margin: 0 0 12px; }
+    p { margin: 0; color: #64748B; }
+    .fil { margin-top: 10px; font-style: italic; }
+    .status { display: inline-flex; align-items: center; gap: 8px; margin-top: 24px; background: #EEF2FF; color: #3730A3; font-weight: 600; font-size: 14px; padding: 8px 14px; border-radius: 99px; }
+    .status i { width: 8px; height: 8px; border-radius: 50%; background: #F59E0B; animation: pulse 1.6s ease-in-out infinite; }
+    @keyframes pulse { 50% { opacity: .3; } }
+    @media (prefers-reduced-motion: reduce) { .status i { animation: none; } }
+  </style>
 </head>
-<body class="bg-slate-950 text-white min-h-screen flex items-center justify-center p-4">
-    <div class="max-w-md text-center p-8 bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl">
-        <div class="text-5xl mb-4">🛠️</div>
-        <h1 class="text-2xl font-bold mb-2">Aral AI is Temporarily Down</h1>
-        <p class="text-slate-400 text-sm mb-6">
-            We are currently updating our servers and deploying Aral AI Version 2. Please check back again later!
-        </p>
-        <div class="inline-block px-4 py-2 bg-indigo-500/10 border border-indigo-500/30 text-indigo-400 rounded-lg text-xs font-mono">
-            Status: Maintenance Mode
-        </div>
-    </div>
+<body>
+  <main class="card">
+    <div class="mark"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82zM12 3 1 9l11 6 9-4.91V17h2V9L12 3z"/></svg></div>
+    <h1>AralAI is being updated</h1>
+    <p>We're getting the next version of AralAI ready. Please check back in a little while.</p>
+    <p class="fil" lang="fil">Ina-update pa ang site. Balik ka lang mamaya!</p>
+    <div class="status"><i></i>Under maintenance</div>
+  </main>
 </body>
 </html>
